@@ -11,5 +11,5 @@ npm init --creates the directory structure
 npm install -save web3 solc express express-handlebars body-parser keccak
 
 copy 2_deploy_contract.js
-truffle compile;truffle migrate; //code should now be deployed in ganache
+truffle compile;truffle migrate; //code should now be deployed in ganache -- creates: ${workspaceFolder}/build/contracts/HelloContract.json
 node src/server.js -- start the server
