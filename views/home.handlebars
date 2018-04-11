@@ -1,0 +1,55 @@
+<section class="container-fluid">
+    <h1>Add a candidate</h1>
+    <div id="elementHello"></div>
+
+    <form id="frmAddCandidate" action="/v1/EnterCandidate/" method="POST">
+        <div class="table-responsive col-6">
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            <input type="text" id="txtFName" placeholder="First" </td>
+                            <td>
+                                <input type="text" id="txtLName" placeholder="Last" </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <input type="submit" class="btn btn-info" value="Submit Button" />
+    </form>
+    <p id="subResult"></p>
+    <button id="btnDeployDynamic" onclick="DeployDynamic()" class="btn btn-primary">Deploy Dynamic Contract</button>
+</section>
+<script>
+    $("#frmAddCandidate").submit(function (e) {
+        e.preventDefault();
+        var $form = $(this);
+        var URL = $form.attr('action');
+
+        var _firstName = $("#txtFName").val();
+        var _lastName = $("#txtLName").val();
+        var posting = $.post(URL, {
+            firstName: _firstName,
+            lastName: _lastName
+        });
+        posting.done(function (data) {
+            console.log(data);
+            let output = JSON.stringify(data);
+            $("#subResult").append(output);
+        });
+    });
+
+    function DeployDynamic() {
+        let URL = "/v1/DeployDynamicContract/";
+        $("#subResult").html("Processing...");
+        $.post(URL).done(result=>{$("#subResult").append(result);})
+
+    }
+
+</script>
