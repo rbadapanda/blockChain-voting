@@ -4,7 +4,7 @@ var Candidate = require('../models/candidate.js');
 module.exports = function(app) {
 
     /* Create */
-    app.post('/candidate', function (req, res) {
+    app.post('/candidateApi', function (req, res) {
         var newCandidate = new Candidate(req.body);
         newCandidate.save(function(err) {
             if (err) {
@@ -15,7 +15,7 @@ module.exports = function(app) {
     });
 
     /* Read */
-    app.get('/candidate', function (req, res) {
+    app.get('/candidateApi', function (req, res) {
         Candidate.find(req.query||{}, function(err, candidates) {
             if (err) {
                 res.json({info: 'error during find candidates', error: err});
@@ -24,7 +24,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/candidate/:id', function (req, res) {
+    app.get('/candidateApi/:id', function (req, res) {
         Candidate.findById(req.params.id, function(err, candidate) {
             if (err) {
                 res.json({info: 'error during find candidate', error: err});
@@ -41,7 +41,7 @@ module.exports = function(app) {
     });
 
     /* Update */
-    app.put('/candidate/:id', function (req, res) {
+    app.put('/candidateApi/:id', function (req, res) {
         Candidate.findById(req.params.id, function(err, candidate) {
             if (err) {
                 res.json({info: 'error during find candidate', error: err});
@@ -62,7 +62,7 @@ module.exports = function(app) {
     });
 
     /* Delete */
-    app.delete('/candidate/:id', function (req, res) {
+    app.delete('/candidateApi/:id', function (req, res) {
         Candidate.findByIdAndRemove(req.params.id, function(err) {
             if (err) {
                 res.json({info: 'error during remove candidate', error: err});

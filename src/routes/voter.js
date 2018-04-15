@@ -4,7 +4,7 @@ var Voter = require('../models/voter.js');
 module.exports = function(app) {
 
     /* Create */
-    app.post('/voter', function (req, res) {
+    app.post('/voterApi', function (req, res) {
         var newVoter = new Voter(req.body);
         newVoter.save(function(err) {
             if (err) {
@@ -15,7 +15,7 @@ module.exports = function(app) {
     });
 
     /* Read */
-    app.get('/voter', function (req, res) {
+    app.get('/voterApi', function (req, res) {
         Voter.find(req.query || {}, function(err, voters) {
             if (err) {
                 res.json({info: 'error during find voters', error: err});
@@ -27,7 +27,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/voter/:id', function (req, res) {
+    app.get('/voterApi/:id', function (req, res) {
         Voter.findById(req.params.id, function(err, voter) {
             if (err) {
                 res.json({info: 'error during find voter', error: err});
@@ -41,7 +41,7 @@ module.exports = function(app) {
     });
 
     /* Update */
-    app.put('/voter/:id', function (req, res) {
+    app.put('/voterApi/:id', function (req, res) {
         Voter.findById(req.params.id, function(err, voter) {
             if (err) {
                 res.json({info: 'error during find voter', error: err});
@@ -62,7 +62,7 @@ module.exports = function(app) {
     });
 
     /* Delete */
-    app.delete('/voter/:id', function (req, res) {
+    app.delete('/voterApi/:id', function (req, res) {
         Voter.findByIdAndRemove(req.params.id, function(err) {
             if (err) {
                 res.json({info: 'error during remove voter', error: err});
