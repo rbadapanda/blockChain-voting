@@ -8,6 +8,8 @@ const solc = require("solc");
 const fs = require("fs");
 const Web3 = require("web3");
 const bodyParser = require("body-parser");
+require('mongoose').connect('mongodb://localhost/blockChainVoting');
+
 
 // Init the app
 var app = express();
@@ -34,6 +36,12 @@ const handlebars = require("express-handlebars").create({
 app.engine("handlebars", handlebars.engine); // to plumb in handlebars framework.
 app.set("view engine", "handlebars"); // to start the engine handler.
 
+
+//instantiate the routes for both Candidate and voters
+const candidateRoutes = require('./routes/candidate.js')(app);
+const voterRoutes = require('./routes/voter.js')(app);
+
+// ===============================================================
 // get the deployed contract
 const HelloContractObject = JSON.parse(
   fs.readFileSync("./build/contracts/HelloContract.json", "utf8")
