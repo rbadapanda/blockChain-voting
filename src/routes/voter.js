@@ -16,7 +16,7 @@ module.exports = function(app) {
 
     /* Read */
     app.get('/voter', function (req, res) {
-        Voter.find(function(err, voters) {
+        Voter.find(req.query || {}, function(err, voters) {
             if (err) {
                 res.json({info: 'error during find voters', error: err});
             };

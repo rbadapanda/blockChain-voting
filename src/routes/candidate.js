@@ -16,7 +16,7 @@ module.exports = function(app) {
 
     /* Read */
     app.get('/candidate', function (req, res) {
-        Candidate.find(function(err, candidates) {
+        Candidate.find(req.query||{}, function(err, candidates) {
             if (err) {
                 res.json({info: 'error during find candidates', error: err});
             };
