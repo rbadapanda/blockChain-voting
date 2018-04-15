@@ -89,8 +89,8 @@ app.listen(app.get("port"), function() {
 });
 
 // Ready to begin routing.
-app.get("/", function(req, res) {
-  res.render("home", { title: "Candidate Entry" });
+app.get("/candidate", function(req, res) {
+  res.render("candidate", { title: "Candidate Entry" });
 });
 
 app.post("/v1/EnterCandidate/", (req, res) => {
