@@ -1,10 +1,21 @@
 var _ = require('lodash');
 var Candidate = require('../models/candidate.js');
 
-module.exports = function(app) {
+exports.readCandidates = function (queryObj, callback){
+    Candidate.find(queryObj||{}, function(err, candidates){
+        if (err) {
+            return callback({error: err})
+        }else{
+            return callback(candidates);
+        }
+    })
+}
+
+
+exports.apis = function(app) {
 
     /* Create */
-    app.post('/candidateApi', function (req, res) {
+    app.post('/api/candidate', function (req, res) {
         var newCandidate = new Candidate(req.body);
         newCandidate.save(function(err) {
             if (err) {
@@ -15,7 +26,7 @@ module.exports = function(app) {
     });
 
     /* Read */
-    app.get('/candidateApi', function (req, res) {
+    app.get('/api/candidate', function (req, res) {
         Candidate.find(req.query||{}, function(err, candidates) {
             if (err) {
                 res.json({info: 'error during find candidates', error: err});
@@ -24,7 +35,7 @@ module.exports = function(app) {
         });
     });
 
-    app.get('/candidateApi/:id', function (req, res) {
+    app.get('/api/candidate/:id', function (req, res) {
         Candidate.findById(req.params.id, function(err, candidate) {
             if (err) {
                 res.json({info: 'error during find candidate', error: err});
@@ -41,7 +52,7 @@ module.exports = function(app) {
     });
 
     /* Update */
-    app.put('/candidateApi/:id', function (req, res) {
+    app.put('/api/candidate/:id', function (req, res) {
         Candidate.findById(req.params.id, function(err, candidate) {
             if (err) {
                 res.json({info: 'error during find candidate', error: err});
@@ -62,7 +73,7 @@ module.exports = function(app) {
     });
 
     /* Delete */
-    app.delete('/candidateApi/:id', function (req, res) {
+    app.delete('/api/candidate/:id', function (req, res) {
         Candidate.findByIdAndRemove(req.params.id, function(err) {
             if (err) {
                 res.json({info: 'error during remove candidate', error: err});
