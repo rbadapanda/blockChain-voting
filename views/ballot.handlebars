@@ -4,26 +4,26 @@
         <div class="col-lg-6 col-sm-6 ">
             <h2>Voters</h2>
             {{#voterList}}
-                <div class="row">
-                    <div class="col-md-12">
+                <div class="row col-md-12">
+                    <div class="card">
                         <h4>{{name}}</h4>
                         <p>Address: {{address}}</p>
                     </div>
                 </div>
-                 <hr/>
+                <hr style="visibility: hidden" />
             {{/voterList}}        
         </div>
         <hr/>
         <div class="col-lg-6 col-sm-6 ">
             <h2>Candidates</h2>
             {{#candidateList}}
-                <div class="row">
-                    <div class="col-md-12">
+                <div class="row col-md-12">
+                    <div class="card">
                         <h4>{{name}}</h4>
                         <p>Party: {{party}}</p>
                     </div>
                 </div>
-                <hr/> 
+                <hr style="visibility: hidden"/> 
             {{/candidateList}}
         </div>
     </div>
