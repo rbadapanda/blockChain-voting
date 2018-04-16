@@ -1,4 +1,4 @@
-pragma solidity ^0.4.16;
+pragma solidity ^0.4.19;
 ///@title Simple Voting - no delegation. 
 contract Ballot {
     // This declares a new complex type which will 
