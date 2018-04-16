@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var voterSchema = mongoose.Schema({
     name: String,
-    age: Number,
+    address: String,
     canVote: Boolean,
     voted: Boolean
 });

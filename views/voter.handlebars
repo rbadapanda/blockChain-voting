@@ -1,0 +1,47 @@
+<section class="container-fluid">
+    <h1>{{{title}}}</h1>
+
+    <form id="frmAddVoter" action="/v1/EnterCandidate/" method="POST">
+        <div class="table-responsive col-9">
+            First Name: <input type="text" id="txtFName" placeholder="First"/>
+            <br>
+            <br>
+            Last Name: <input type="text" id="txtLName" placeholder="Last"/>
+            <br>
+            <br>
+            Address: <input type="text" id="txtAddress" placeholder="Address from Ganache"/>
+        </div>
+        <br>
+        <br>
+        <input type="submit" class="btn btn-info" value="Add Voter" />
+    </form>
+    <hr>
+    <p id="listVoters"></p>
+</section>
+<script>
+    $("#frmAddVoter").submit(function (e) {
+        e.preventDefault();
+        var $form = $(this);
+        var URL = $form.attr('action');
+
+        var _firstName = $("#txtFName").val();
+        var _lastName = $("#txtLName").val();
+        var posting = $.post(URL, {
+            firstName: _firstName,
+            lastName: _lastName
+        });
+        posting.done(function (data) {
+            console.log(data);
+            let output = JSON.stringify(data);
+            $("#subResult").append(output);
+        });
+    });
+
+    function DeployDynamic() {
+        let URL = "/v1/DeployDynamicContract/";
+        $("#subResult").html("Processing...");
+        $.post(URL).done(result=>{$("#subResult").append(result);})
+
+    }
+
+</script>

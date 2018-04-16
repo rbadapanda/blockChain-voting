@@ -1,0 +1,30 @@
+<section class="container">
+    <h1>{{{title}}}</h1>
+    <div class="row">
+        <div class="col-lg-6 col-sm-6 ">
+            <h2>Voters</h2>
+            {{#voterList}}
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>{{name}}</h4>
+                        <p>Address: {{address}}</p>
+                    </div>
+                </div>
+                 <hr/>
+            {{/voterList}}        
+        </div>
+        <hr/>
+        <div class="col-lg-6 col-sm-6 ">
+            <h2>Candidates</h2>
+            {{#candidateList}}
+                <div class="row">
+                    <div class="col-md-12">
+                        <h4>{{name}}</h4>
+                        <p>Party: {{party}}</p>
+                    </div>
+                </div>
+                <hr/> 
+            {{/candidateList}}
+        </div>
+    </div>
+</section>
