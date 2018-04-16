@@ -9,6 +9,8 @@ const fs = require("fs");
 const Web3 = require("web3");
 const bodyParser = require("body-parser");
 require('mongoose').connect('mongodb://localhost/blockChainVoting');
+var readCandidates = require('./routes/candidate.js').readCandidates;
+var readVoters = require('./routes/voter.js').readVoters;
 
 
 // Init the app
@@ -38,8 +40,8 @@ app.set("view engine", "handlebars"); // to start the engine handler.
 
 
 //instantiate the routes for both Candidate and voters
-const candidateRoutes = require('./routes/candidate.js')(app);
-const voterRoutes = require('./routes/voter.js')(app);
+const candidateRoutes = require('./routes/candidate.js').apis(app);
+const voterRoutes = require('./routes/voter.js').apis(app);
 
 // ===============================================================
 // get the deployed contract
@@ -48,7 +50,7 @@ const HelloContractObject = JSON.parse(
 );
 
 // connect to the smart contract.
-var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545")); // for ganache
+var web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:7545")); // RPC server of ganache
 // var net = require("net");
 //var web3 = new Web3(new Web3.providers.WebsocketProvider("http://localhost:7545"));
 //var web3 = new Web3(new Web3.providers.IpcProvider(ipcPath, net)); // for geth
@@ -59,10 +61,11 @@ var connectedContract = new web3.eth.Contract(
   { gasPrice: "2000000000" }
 );
 
-// Get the account.  In real scenarios, we would use metamask's injected web3.currentprovider to get a real account.
+// Get the account from Ganache.  In real scenarios, we would use metamask's injected web3.currentprovider to get a real account.
 var account;
 var getAccountPromise = new Promise(function(resolve, reject) {
   web3.eth.getAccounts((err, acs) => {
+    // When this started failing - Found: Ganache was broken on a bugcheck - restarted Ganache to fix the issue.
     if (err != null) {
       throw new Error("No valid account found.");
     }
@@ -89,8 +92,28 @@ app.listen(app.get("port"), function() {
 });
 
 // Ready to begin routing.
-app.get("/candidate", function(req, res) {
-  res.render("candidate", { title: "Candidate Entry" });
+app.get("/", function (req, res) {
+  readCandidates(req.query,
+    (_candidateList) => {
+      readVoters(req.query,
+      (_voterList) =>
+        res.render("ballot", {
+          title: "Vote For Washington State Governor"
+          , candidateList: _candidateList
+          , voterList: _voterList
+        })
+      )
+    }
+  );
+
+});
+
+app.get("/candidate", function (req, res) {
+  res.render("candidate", { title: "Add a Candidate" });
+});
+
+app.get("/voter", function (req, res) {
+  res.render("voter", { title: "Add a Voter" });
 });
 
 app.post("/v1/EnterCandidate/", (req, res) => {
