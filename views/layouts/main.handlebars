@@ -29,7 +29,26 @@
   <!-- our app specifc client-side javascript -->
   <script type="text/javascript" src="/assets/js/app.js"></script>
 
-  {{{body}}}
+  <div class="jumbotron jumbotron-fluid"
+    style="background:url('https://wallpapercave.com/wp/uuXY5N8.jpg')" >
+    <nav class="nav justify-content-end">
+      <a class="nav-link active"
+        href="/">Home</a>
+      <a class="nav-link"
+        href="/candidate">Candiates</a>
+      <a class="nav-link"
+        href="/voter">Voters</a>
+      <a class="nav-link disabled"
+        href="#">Result of the Vote</a>
+    </nav>
+    <div class='container'>
+      <h1 class="display-4">Vote For Governor</h1>
+      <p class="lead">Help elect Governor for the state of Washington.</p>
+    </div>
+  </div>
+  <div class='container-fluid'>
+    {{{body}}}
+  </div>
 
 </body>
 
