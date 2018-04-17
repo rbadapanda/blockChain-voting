@@ -12,11 +12,24 @@
             Account#: <input type="text" id="txtAccount" placeholder="Address from Ganache"/>
         </div>
         <br>
-        <br>
         <input type="submit" class="btn btn-info" value="Add Voter" />
     </form>
     <hr>
-    <p id="listVoters"></p>
+    <div class="row">
+        <div class="col-lg-6 col-sm-6 ">
+            <h2>Voters</h2>
+            {{#voterList}}
+            <div class="row col-md-12">
+                <div class="card">
+                    <h4>{{name}}</h4>
+                    <p>Address: {{address}}</p>
+                </div>
+            </div>
+            <hr style="visibility: hidden" /> {{/voterList}}
+        </div>
+        <hr/>
+    </div>
+
 </section>
 <script>
     $("#frmAddVoter").submit(function (e) {
@@ -36,12 +49,5 @@
             $("#subResult").append(output);
         });
     });
-
-    function DeployDynamic() {
-        let URL = "/v1/DeployDynamicContract/";
-        $("#subResult").html("Processing...");
-        $.post(URL).done(result=>{$("#subResult").append(result);})
-
-    }
 
 </script>

@@ -20,9 +20,24 @@
                 </tbody>
             </table>
         </div>
-        <input type="submit" class="btn btn-info" value="Submit Button" />
+        <input type="submit" class="btn btn-info" value="Add Candidate" />
     </form>
     <p id="subResult"></p>
+    <hr>    
+    <div class="row">
+        <div class="col-lg-6 col-sm-6 ">
+            <h2>Candidates</h2>
+            {{#candidateList}}
+            <div class="row col-md-12">
+                <div class="card">
+                    <h4>{{name}}</h4>
+                    <p>Party: {{party}}</p>
+                </div>
+            </div>
+            <hr style="visibility: hidden" /> {{/candidateList}}
+        </div>
+    </div>
+
 </section>
 <script>
     $("#frmAddCandidate").submit(function (e) {

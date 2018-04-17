@@ -98,7 +98,7 @@ app.get("/", function (req, res) {
       readVoters(req.query,
       (_voterList) =>
         res.render("ballot", {
-          title: "Vote For Washington State Governor"
+          title: "Cast your Vote"
           , candidateList: _candidateList
           , voterList: _voterList
         })
@@ -109,11 +109,21 @@ app.get("/", function (req, res) {
 });
 
 app.get("/candidate", function (req, res) {
-  res.render("candidate", { title: "Add a Candidate" });
+  readCandidates(req.query,
+    (_candidateList) => 
+      res.render("candidate", {
+        title: "Add a Candidate"
+        , candidateList: _candidateList
+      }));
 });
 
 app.get("/voter", function (req, res) {
-  res.render("voter", { title: "Add a Voter" });
+  readVoters(req.query,
+    (_voterList) =>
+      res.render("voter", {
+        title: "Add a Voter"
+        , voterList: _voterList
+      }));
 });
 
 app.post("/v1/EnterCandidate/", (req, res) => {
