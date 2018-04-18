@@ -46,7 +46,7 @@ const voterRoutes = require('./routes/voter.js').apis(app);
 // ===============================================================
 // get the deployed contract
 const HelloContractObject = JSON.parse(
-  fs.readFileSync("./build/contracts/HelloContract.json", "utf8")
+  fs.readFileSync("./build/contracts/Ballot.json", "utf8")
 );
 
 // connect to the smart contract.
@@ -110,7 +110,7 @@ app.get("/", function (req, res) {
 
 app.get("/candidate", function (req, res) {
   readCandidates(req.query,
-    (_candidateList) => 
+    (_candidateList) =>
       res.render("candidate", {
         title: "Add a Candidate"
         , candidateList: _candidateList
@@ -147,12 +147,12 @@ app.post("/v1/EnterCandidate/", (req, res) => {
 
       // Ganache test environment is in 'auto-mining' mode. In reality, the following might not be available until - anywhere between 10 mins to 10 days.
       connectedContract.methods
-        .getCandidateHash(web3.utils.fromAscii(fullName))
+        .getCandidateHash()
         .call({ from: account })
         .then(resultCandidateHash => {
           let returnInfo = {
             txHash: transactionHash,
-            personHash: resultCandidateHash
+            personHash: web3.utils.toAscii(resultCandidateHash)
           };
           res.send(returnInfo);
         });
