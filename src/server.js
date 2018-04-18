@@ -10,6 +10,7 @@ const Web3 = require("web3");
 const bodyParser = require("body-parser");
 require('mongoose').connect('mongodb://localhost/blockChainVoting');
 var readCandidates = require('./routes/candidate.js').readCandidates;
+var addCandidate = require('./routes/candidate.js').addCandidate;
 var readVoters = require('./routes/voter.js').readVoters;
 
 
@@ -129,7 +130,9 @@ app.get("/voter", function (req, res) {
 app.post("/v1/EnterCandidate/", (req, res) => {
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
+  let party = req.body.party;
   let fullName = firstName + " " + lastName;
+  let name = fullName;
 
   // use the connected contract to call the contract's AddCandidate method
   // WARNING:
@@ -155,13 +158,19 @@ app.post("/v1/EnterCandidate/", (req, res) => {
             personHash: web3.utils.toAscii(resultCandidateHash)
           };
           res.send(returnInfo);
-        });
+        })
+        .then(() => {
+          addCandidate({ name, party });
+        }
+
+        )
     })
     .catch(err => {
       console.log(err);
     });
 
-  connectedContract.once("candidateAdded", null, function(error, eventJsonObject) {
+  //ganache does not support events
+ /*  connectedContract.once("candidateAdded", null, function(error, eventJsonObject) {
     if (error) {
       console.log(error);
     }
@@ -171,7 +180,7 @@ app.post("/v1/EnterCandidate/", (req, res) => {
     }
   });
 
-  /* another way to do it
+  // another way to do it
   var candidateAddedEvent = connectedContract.events.candidateAdded(
     { filter: { from: account } },
     function(error, event) {

@@ -1,12 +1,24 @@
 var _ = require('lodash');
 var Candidate = require('../models/candidate.js');
 
-exports.readCandidates = function (queryObj, callback){
+exports.readCandidates = function (queryObj, callback = ()=> { }){
     Candidate.find(queryObj||{}, function(err, candidates){
         if (err) {
             return callback({error: err})
         }else{
             return callback(candidates);
+        }
+    })
+}
+
+exports.addCandidate = function (candidate, callback = ()=> { }){
+    var newCandidate = new Candidate(candidate);
+
+    newCandidate.save(function (err) {
+        if (err) {
+            return callback({error: err})
+        }else{
+            return callback("candidate created successfully");
         }
     })
 }

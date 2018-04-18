@@ -42,18 +42,18 @@ contract Ballot {
         success = false;
         uint empty;
 
-        if(candidateLookup[candidateName] == empty){
-            // we can add!
-            candidateLookup[candidateName] = 1;
-            proposals.push(Proposal({
-                name: candidateName,
-                voteCount: 0
-            }));
-            success = true;
-        }
+        require (candidateLookup[candidateName] == empty);
+
+        // we can add!
+        candidateLookup[candidateName] = 1;
+        proposals.push(Proposal({
+            name: candidateName,
+            voteCount: 0
+        }));
+        success = true;
 
         // raise an event we can filter by our address, return
-        candidateAdded(msg.sender, success);
+        // candidateAdded(msg.sender, success);
         return success;
     }
 

@@ -2,20 +2,20 @@
     <h1>{{{title}}}</h1>
 
     <form id="frmAddCandidate" action="/v1/EnterCandidate/" method="POST">
-        <div class="table-responsive col-9">
+        <div class="table-responsive">
             <table class="table table-bordered">
                 <thead>
                     <tr>
                         <th>First Name</th>
                         <th>Last Name</th>
+                        <th>Party</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>
-                            <input type="text" id="txtFName" placeholder="First" </td>
-                            <td>
-                                <input type="text" id="txtLName" placeholder="Last" </td>
+                        <td> <input type="text" id="txtFName" placeholder="First" </td>
+                        <td> <input type="text" id="txtLName" placeholder="Last" </td>
+                        <td> <input type="text" id="txtParty" placeholder="D/R" </td>
                     </tr>
                 </tbody>
             </table>
@@ -23,7 +23,7 @@
         <input type="submit" class="btn btn-info" value="Add Candidate" />
     </form>
     <p id="subResult"></p>
-    <hr>    
+    <hr>
     <div class="row">
         <div class="col-lg-6 col-sm-6 ">
             <h2>Candidates</h2>
@@ -45,11 +45,13 @@
         var $form = $(this);
         var URL = $form.attr('action');
 
-        var _firstName = $("#txtFName").val();
-        var _lastName = $("#txtLName").val();
+        var firstName = $("#txtFName").val();
+        var lastName = $("#txtLName").val();
+        var party = $("#txtParty").val();
         var posting = $.post(URL, {
-            firstName: _firstName,
-            lastName: _lastName
+            firstName,
+            lastName,
+            party
         });
         posting.done(function (data) {
             console.log(data);

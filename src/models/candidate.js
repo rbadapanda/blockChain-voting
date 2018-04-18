@@ -2,7 +2,6 @@ var mongoose = require('mongoose');
 
 var candidateSchema = mongoose.Schema({
     name: String,
-    age: Number,
     party: String
 });
 
