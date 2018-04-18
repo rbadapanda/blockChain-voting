@@ -1,7 +1,7 @@
 <section class="container-fluid">
     <h1>{{{title}}}</h1>
 
-    <form id="frmAddVoter" action="/v1/EnterCandidate/" method="POST">
+    <form id="frmAddVoter" action="/api/voter" method="POST">
         <div class="table-responsive col-9">
             First Name: <input type="text" id="txtFName" placeholder="First"/>
             <br>
@@ -39,14 +39,14 @@
 
         var _firstName = $("#txtFName").val();
         var _lastName = $("#txtLName").val();
+        var _account = $("#txtAccount").val();
         var posting = $.post(URL, {
-            firstName: _firstName,
-            lastName: _lastName
+            name: _firstName + ' ' + _lastName,
+            address: _account
         });
         posting.done(function (data) {
-            console.log(data);
-            let output = JSON.stringify(data);
-            $("#subResult").append(output);
+            let output = JSON.parse(JSON.stringify(data));
+            console.log(output);
         });
     });
 
