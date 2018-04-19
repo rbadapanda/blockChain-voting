@@ -190,6 +190,25 @@ app.post("/v1/EnterCandidate/", (req, res) => {
   */
 });
 
+app.post("/castVote/", (req, res) => {
+  let voterAddress = req.body.voterAddress;
+  let candidateIndex = req.body.candidateIndex;
+
+
+  connectedContract.methods
+    .vote(candidateIndex)
+    .send({ from: voterAddress })
+    .then(resultObject => {
+      let transactionHash = resultObject.transactionHash;
+
+      res.send({ status: "Success", transactionHash });
+    })
+    .catch(err => {
+      console.log(err);
+      res.send("Vote was not successful. because:", err);
+    });
+});
+
 //-----------------------------------------------------------------
 // Dynaamic section
 //-----------------------------------------------------------------

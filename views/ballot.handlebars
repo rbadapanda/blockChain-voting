@@ -1,37 +1,60 @@
-<section class="container-fluid">
+<section>
     <h1>{{{title}}}</h1>
     <hr class='my-4'>
-    <div class="row">
-        <div class="col-lg-4 col-sm-4 ">
-            <h2>Voters</h2>
-            <select name="Voters">
-                {{#each voterList}}
-                <option value="{{address}}"
-                        {{#selected}}selected="selected"
-                        {{/selected}}>
-                    {{name}}
-                </option>
-                {{/each}}
-            </select>
+    <form id="frmCastVote" action='/castVote' method="POST">
+        <div class="row">
+            <div class="col-lg-4 col-sm-4 ">
+                <h2>Voters</h2>
+                <select id="Voters">
+                    {{#each voterList}}
+                        <option value="{{address}}"
+                            {{#selected}}selected="selected" {{/selected}}>
+                            {{name}}
+                        </option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="col-lg-4 col-sm-4 ">
+                <h2>Candidates</h2>
+                <select id="Candidates"
+                        size={{candidateList.length}}>
+                    {{#each candidateList}}
+                        <option value="{{name}}_{{party}}"
+                            {{#selected}}selected="selected"{{/selected}}>
+                            {{name}} (Party: {{party}})
+                        </option>
+                    {{/each}}
+                </select>
+            </div>
+            <div class="col-lg-4 col-sm-4 ">
+                <br>
+                <input type="submit"
+                    class="btn btn-info"
+                    value="Vote" />
+            </div>
         </div>
-        <div class="col-lg-4 col-sm-4 ">
-            <h2>Candidates</h2>
-            <select name="Candidates"
-                    size={{candidateList.length}}>
-                {{#each candidateList}}
-                <option value="{{name}}"
-                        {{#selected}}selected="selected"
-                        {{/selected}}>
-                    {{name}} (Party: {{party}})
-                </option>
-                {{/each}}
-            </select>
-        </div>
-        <div class="col-lg-4 col-sm-4 ">
-            <br>
-            <input type="submit"
-                   class="btn btn-info"
-                   value="Vote" />
-        </div>
-    </div>
+    </form>
+    <hr class='my-4'>
+    <p id="subResult"></p>
 </section>
+<script>
+        $("#frmCastVote").submit(function (e) {
+            e.preventDefault();
+            var $form = $(this);
+            var URL = $form.attr('action');
+
+            var voterAddress = $("#Voters option:selected").val();
+            var candidateIndex = $("#Candidates option:selected").index();
+
+            var posting = $.post(URL, {
+                voterAddress,
+                candidateIndex
+            });
+
+            posting.done(function (data) {
+                let output = JSON.parse(JSON.stringify(data));
+                console.log(output);
+                $("#subResult").append(output);
+            });
+        });
+</script>
