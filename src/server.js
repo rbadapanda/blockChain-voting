@@ -127,6 +127,20 @@ app.get("/voter", function (req, res) {
       }));
 });
 
+app.get("/result", function (req, res) {
+  connectedContract.methods
+    .winnerName()
+    .call({ from: account })
+    .then(winnerHash => {
+      let returnInfo = {
+        title: "And The Winner Is...",
+        winner: web3.utils.toAscii(winnerHash)
+      };
+
+      res.render("result", returnInfo);
+    });
+});
+
 app.post("/v1/EnterCandidate/", (req, res) => {
   let firstName = req.body.firstName;
   let lastName = req.body.lastName;
@@ -205,7 +219,7 @@ app.post("/castVote/", (req, res) => {
     })
     .catch(err => {
       console.log(err);
-      res.send("Vote was not successful. because:", err);
+      res.send({ status: "Failure", err});
     });
 });
 
