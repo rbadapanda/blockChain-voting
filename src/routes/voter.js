@@ -11,6 +11,17 @@ exports.readVoters = function (queryObj, callback) {
     })
 }
 
+exports.addVoter = function (voter, callback = () => { }) {
+    var newVoter = new Voter(voter);
+
+    newVoter.save(function (err) {
+        if (err) {
+            return callback({ error: err })
+        } else {
+            return callback("voter created successfully");
+        }
+    })
+}
 
 exports.apis = function (app) {
 

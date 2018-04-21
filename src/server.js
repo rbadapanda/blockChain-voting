@@ -11,6 +11,7 @@ const bodyParser = require("body-parser");
 require('mongoose').connect('mongodb://localhost/blockChainVoting');
 var readCandidates = require('./routes/candidate.js').readCandidates;
 var addCandidate = require('./routes/candidate.js').addCandidate;
+var addVoter = require('./routes/voter.js').addVoter;
 var readVoters = require('./routes/voter.js').readVoters;
 
 
@@ -206,7 +207,7 @@ app.post("/v1/EnterCandidate/", (req, res) => {
 
 app.post("/castVote/", (req, res) => {
   let voterAddress = req.body.voterAddress;
-  let candidateIndex = req.body.candidateIndex;
+  let candidateIndex = Number.parseInt(req.body.candidateIndex)||0;
 
 
   connectedContract.methods
@@ -223,35 +224,19 @@ app.post("/castVote/", (req, res) => {
     });
 });
 
-//-----------------------------------------------------------------
-// Dynaamic section
-//-----------------------------------------------------------------
-
-app.post("/v1/DeployDynamicContract/", (req, res) => {
-  // load and compile the file, get an interface and the compiled bytecode
-  let contractSourceCode = fs.readFileSync("./demo.sol", "utf8");
-  let compiledContract = solc.compile(contractSourceCode, 1); // 1 == optimization level 1
-  let abi = JSON.parse(compiledContract.contracts[":demo"].interface);
-  let byteCode = compiledContract.contracts[":demo"].bytecode;
-
-  // make a web3 contract instance, then deploy and get a deployment promise.
-  dynamicContract  = new web3.eth.Contract(abi);
-  console.log(dynamicContract);
-  dynamicPromise = dynamicContract.deploy({
-      data:byteCode
-  }).send({
-    from: account,
-    gas: 1500000,
-    gasprice: 2000000000
-  }); // deploy the contract and tell it to limit gas and gasprice.
-
-  // call the contract's sayHello pure method
-  dynamicPromise.then(newContractInstance => {
-      newContractInstance.methods.sayHello().call({from:account}).then(result=>{
-          res.send(result);
-      });
-  });
+app.post("/EnterVoter/", (req, res) => {
+  let voterAddress = req.body.address;
 
 
-
+  connectedContract.methods
+    .giveRightToVote(voterAddress)
+    .send({ from: account })
+    .then(resultObject => {
+      let transactionHash = resultObject.transactionHash;
+      addVoter(req.body);
+    })
+    .catch(err => {
+      console.log(err);
+      res.send({ status: "Failure", err});
+    });
 });

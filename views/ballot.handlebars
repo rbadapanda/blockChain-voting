@@ -5,7 +5,8 @@
         <div class="row">
             <div class="col-lg-4 col-sm-4 ">
                 <h2>Voters</h2>
-                <select id="Voters">
+                <select id="Voters"
+                         size=5>
                     {{#each voterList}}
                         <option value="{{address}}"
                             {{#selected}}selected="selected" {{/selected}}>
@@ -17,7 +18,7 @@
             <div class="col-lg-4 col-sm-4 ">
                 <h2>Candidates</h2>
                 <select id="Candidates"
-                        size={{candidateList.length}}>
+                        size=5>
                     {{#each candidateList}}
                         <option value="{{name}}_{{party}}"
                             {{#selected}}selected="selected"{{/selected}}>
